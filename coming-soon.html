@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <title>DJANGOU - Bientôt Disponible</title>
+    <meta name="theme-color" content="#6d28d9">
+    <style>
+        :root {
+            --color-primary: #6d28d9;
+            --color-primary-light: #8b5cf6;
+            --color-primary-dark: #5b21b6;
+            --color-bg: #f8fafc;
+            --color-text: #0f172a;
+            --color-text-muted: #64748b;
+            --color-card: #ffffff;
+            --font-main: system-ui, -apple-system, sans-serif;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --color-bg: #0f172a;
+                --color-text: #f8fafc;
+                --color-text-muted: #94a3b8;
+                --color-card: #1e293b;
+            }
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--color-bg);
+            color: var(--color-text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Arrière-plan animé ultra-léger (CSS uniquement, GPU accéléré) */
+        .bg-shapes {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            overflow: hidden; z-index: -1;
+        }
+
+        .shape {
+            position: absolute;
+            background: linear-gradient(135deg, var(--color-primary-light), var(--color-primary));
+            border-radius: 50%;
+            filter: blur(60px);
+            opacity: 0.15;
+            animation: float 20s infinite ease-in-out alternate;
+            will-change: transform;
+        }
+
+        .shape:nth-child(1) { width: 300px; height: 300px; top: -10%; left: -10%; animation-delay: 0s; }
+        .shape:nth-child(2) { width: 400px; height: 400px; bottom: -20%; right: -10%; animation-delay: -5s; animation-duration: 25s; }
+        .shape:nth-child(3) { width: 200px; height: 200px; top: 40%; left: 50%; animation-delay: -10s; animation-duration: 15s; }
+
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(50px, 50px) scale(1.1); }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .shape { animation: none !important; transform: none !important; }
+        }
+
+        .container {
+            text-align: center;
+            padding: 2rem;
+            max-width: 600px;
+            width: 100%;
+            z-index: 1;
+            animation: slideUp 1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .logo-wrap { margin-bottom: 2rem; }
+        .logo-wrap img { height: 60px; border-radius: 12px; box-shadow: 0 10px 25px rgba(109, 40, 217, 0.2); }
+
+        h1 { font-size: clamp(2rem, 5vw, 3rem); font-weight: 800; margin-bottom: 1rem; letter-spacing: -0.02em; }
+        .highlight { background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        
+        p { font-size: 1.1rem; color: var(--color-text-muted); margin-bottom: 3rem; line-height: 1.6; }
+
+        /* Minuteur */
+        .countdown {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin-bottom: 3rem;
+        }
+
+        .time-box {
+            background: var(--color-card);
+            border: 1px solid rgba(109, 40, 217, 0.15);
+            padding: 1.5rem 1rem;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+        
+        .time-box::after {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 4px;
+            background: var(--color-primary);
+        }
+
+        .time-box:hover { transform: translateY(-5px); }
+
+        .time-value { font-size: clamp(1.5rem, 4vw, 2.5rem); font-weight: 800; color: var(--color-text); line-height: 1; margin-bottom: 0.5rem; }
+        .time-label { font-size: 0.75rem; text-transform: uppercase; font-weight: 700; color: var(--color-text-muted); letter-spacing: 0.05em; }
+
+        .btn-back {
+            display: inline-flex; align-items: center; justify-content: center;
+            padding: 0.8rem 1.5rem; border-radius: 50px;
+            background: transparent; color: var(--color-text);
+            border: 2px solid var(--color-text-muted); text-decoration: none;
+            font-weight: 600; transition: all 0.2s ease;
+        }
+        .btn-back:hover { background: var(--color-text); color: var(--color-bg); }
+
+        /* Optimisation pour les petits écrans / low-end */
+        @media (max-width: 480px) {
+            .countdown { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+            .time-box { padding: 1rem 0.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-shapes" aria-hidden="true">
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
+
+    <div class="container">
+        <div class="logo-wrap">
+            <img src="logo.jpg" alt="DJANGOU Logo">
+        </div>
+        
+        <h1>L'application est <span class="highlight">bientôt là.</span></h1>
+        <p>L'équipe DJANGOU prépare le déploiement officiel de l'application. La révolution EdTech commence dans :</p>
+        
+        <div class="countdown">
+            <div class="time-box">
+                <div class="time-value" id="days">00</div>
+                <div class="time-label">Jours</div>
+            </div>
+            <div class="time-box">
+                <div class="time-value" id="hours">00</div>
+                <div class="time-label">Heures</div>
+            </div>
+            <div class="time-box">
+                <div class="time-value" id="minutes">00</div>
+                <div class="time-label">Minutes</div>
+            </div>
+            <div class="time-box">
+                <div class="time-value" id="seconds">00</div>
+                <div class="time-label">Secondes</div>
+            </div>
+        </div>
+
+        <a href="index.html" class="btn-back">← Retour à l'accueil</a>
+    </div>
+
+    <script>
+        // Date cible : 21 Septembre 2026 à 00:00:00
+        const targetDate = new Date('2026-09-21T00:00:00').getTime();
+        const targetUrl = 'https://djangou.site/';
+        let isRedirecting = false;
+
+        function updateCountdown() {
+            if (isRedirecting) return;
+
+            const now = new Date().getTime();
+            const distance = targetDate - now;
+
+            if (distance <= 0) {
+                // Le compte à rebours est terminé
+                isRedirecting = true;
+                document.querySelector('.countdown').innerHTML = '<h2 style="grid-column: 1 / -1;">Déploiement en cours... Redirection...</h2>';
+                setTimeout(() => {
+                    window.location.href = targetUrl;
+                }, 1500);
+                return;
+            }
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById('days').innerText = days.toString().padStart(2, '0');
+            document.getElementById('hours').innerText = hours.toString().padStart(2, '0');
+            document.getElementById('minutes').innerText = minutes.toString().padStart(2, '0');
+            document.getElementById('seconds').innerText = seconds.toString().padStart(2, '0');
+        }
+
+        // Optimisation pour les appareils bas de gamme : setInterval avec RequestAnimationFrame fallback possible, 
+        // mais setInterval 1000ms est déjà très léger.
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+    </script>
+</body>
+</html>
